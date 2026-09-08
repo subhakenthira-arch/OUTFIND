@@ -1,212 +1,96 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>DRESSFINDER — Local Shopping Discovery</title>
+<title>DressFinder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-:root{--ink:#151515;--muted:#707070;--line:#e8e8e8;--bg:#f6f6f7;--card:#fff;--soft:#f0f1f3;--good:#087a3d}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink)}
-.app{width:min(100%,480px);margin:auto;background:#fff;min-height:100vh;padding-bottom:82px}
-header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding:13px 14px}
-.top{display:flex;justify-content:space-between;align-items:center}.logo{font-size:24px;font-weight:900;letter-spacing:1px}.tag{font-size:11px;color:var(--muted);margin-top:2px}
-.iconbtn{border:0;background:var(--soft);border-radius:11px;padding:9px;cursor:pointer}
-.search{display:flex;gap:8px;align-items:center;background:var(--soft);border-radius:13px;padding:10px 12px;margin-top:11px}.search input{width:100%;border:0;outline:0;background:transparent;font-size:14px}
-main{padding:14px}.hero{background:#111;color:#fff;border-radius:19px;padding:20px;margin-bottom:13px}.hero h1{margin:0 0 7px;font-size:25px}.hero p{margin:0;color:#ddd;font-size:12px;line-height:1.5}
-.location{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:12px 0}.location small{display:block;color:var(--muted);margin-top:2px}
-.btn{border:0;border-radius:10px;background:#111;color:#fff;padding:9px 12px;font-weight:700;cursor:pointer}.btn.light{background:var(--soft);color:#111}.btn.good{background:#087a3d}
-h2{font-size:18px;margin:20px 0 10px}.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.cat{border:1px solid var(--line);border-radius:13px;background:#fff;padding:10px 3px;text-align:center;cursor:pointer;font-size:11px}.cat b{display:block;font-size:20px;margin-bottom:4px}
-.horizontal{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.chip{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:18px;padding:8px 12px;cursor:pointer}.chip.active{background:#111;color:#fff;border-color:#111}
-.itembar{display:flex;align-items:center;justify-content:space-between;gap:8px}.itembar .selected{font-weight:800}.itemscroll{display:flex;gap:7px;overflow:auto;padding:8px 0 3px}
-.panel{border:1px solid var(--line);border-radius:15px;padding:11px;margin-top:10px;background:#fff}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field label{display:block;font-size:10px;color:var(--muted);margin-bottom:4px}.field select,.field input{width:100%;padding:9px;border:1px solid #ddd;border-radius:10px;background:#fff}
-.card{border:1px solid var(--line);border-radius:15px;padding:12px;margin:9px 0;background:#fff}.card h3{font-size:15px;margin:0 0 5px}.meta{font-size:11px;color:var(--muted);line-height:1.55}.price{font-weight:900;font-size:17px;margin-top:7px}.stock{font-size:11px;color:var(--good);font-weight:700;margin-top:4px}.actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.actions .btn{font-size:11px;padding:8px 9px}.shophead{display:flex;justify-content:space-between;gap:8px}.offer{background:#f7f7f7;border-radius:10px;padding:8px;margin-top:8px;font-size:11px}
-.shopnav{display:flex;gap:8px;overflow:auto}.shopnav .chip{font-weight:700}
-.empty{padding:14px;border:1px dashed #bbb;border-radius:12px;color:#666;text-align:center;font-size:12px}
-.bottom{position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(6,1fr);background:#fff;border-top:1px solid var(--line);padding:7px 2px calc(7px + env(safe-area-inset-bottom))}
-.bottom button{border:0;background:#fff;color:#555;font-size:9px;cursor:pointer}.bottom b{display:block;font-size:17px;margin-bottom:2px}
-.modal{display:none;position:fixed;inset:0;background:#0008;z-index:50;align-items:flex-end}.modal.open{display:flex}.modalbox{background:#fff;width:min(480px,100%);max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px}.close{float:right;border:0;background:var(--soft);border-radius:9px;padding:7px;cursor:pointer}
-.shopHero{background:#111;color:#fff;border-radius:17px;padding:17px}.shopHero .meta{color:#ccc}.pill{display:inline-block;background:#eee;color:#111;border-radius:20px;padding:6px 9px;font-size:10px;margin:4px 4px 0 0}
-.tabs{display:flex;gap:6px;overflow:auto;margin:12px 0}.tab{border:0;background:var(--soft);padding:8px 11px;border-radius:16px;font-size:11px;cursor:pointer}.tab.active{background:#111;color:#fff}
-.toast{position:fixed;z-index:80;bottom:88px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 14px;border-radius:10px;font-size:12px;display:none}
+  body { font-family: Arial, sans-serif; margin: 0; padding-bottom: 70px; }
+  header { padding: 15px; border-bottom: 1px solid #eee; }
+  header h1 { margin: 0; font-size: 28px; }
+  header p { margin: 4px 0 12px; color: #777; font-size: 14px; }
+  #search { width: 90%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+  #products { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { border: 1px solid #eee; border-radius: 10px; padding: 12px; text-align: center; }
+  .card .emoji { font-size: 36px; }
+  .card h3 { margin: 8px 0 4px; font-size: 15px; }
+  .card p { margin: 0; color: #555; font-size: 13px; }
+  nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #eee;
+        display: flex; justify-content: space-around; padding: 8px 0; }
+  nav button { background: none; border: none; font-size: 12px; color: #555; }
+  nav button.active { color: #007bff; font-weight: bold; }
+  .empty { text-align: center; color: #999; padding: 30px; }
 </style>
 </head>
 <body>
-<div class="app">
+
 <header>
- <div class="top"><div><div class="logo">DRESSFINDER</div><div class="tag">Find it • Check it • Reserve it</div></div><button class="iconbtn" onclick="openSettings()">⚙️</button></div>
- <div class="search">🔎<input id="search" placeholder="Search product, brand, colour..." oninput="renderAll()"></div>
+  <h1>DRESSFINDER</h1>
+  <p>Find it • Check it • Reserve it</p>
+  <input id="search" type="text" placeholder="🔍 Search product, brand, colour...">
 </header>
-<main id="main"></main>
-<nav class="bottom">
- <button onclick="goHome()">🏠<br>Home</button><button onclick="setCategory('Gents')">👕<br>Gents</button><button onclick="setCategory('Ladies')">👗<br>Ladies</button><button onclick="setCategory('Kids')">🧒<br>Kids</button><button onclick="setCategory('Shoes')">👟<br>Shoes</button><button onclick="showShops()">🏪<br>Shops</button>
+
+<div id="products"></div>
+
+<nav>
+  <button onclick="setCategory('all')" id="btn-all">🏠<br>Home</button>
+  <button onclick="setCategory('gents')" id="btn-gents">👕<br>Gents</button>
+  <button onclick="setCategory('ladies')" id="btn-ladies">👗<br>Ladies</button>
+  <button onclick="setCategory('kids')" id="btn-kids">🧒<br>Kids</button>
+  <button onclick="setCategory('shoes')" id="btn-shoes">👟<br>Shoes</button>
+  <button onclick="setCategory('shops')" id="btn-shops">🏬<br>Shops</button>
 </nav>
-</div>
-<div class="modal" id="modal"><div class="modalbox"><button class="close" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div>
-<div class="toast" id="toast"></div>
 
 <script>
-const itemData={
-Gents:["All Items","🔥 Trending","Shirt","T-Shirt","Jeans","Baggy Pants","Trouser","Pants","Shorts","Formal Shirt","Kurta","Hoodie","Sweatshirt","Jacket","Blazer","Innerwear","Baniyan","Vest","Underwear","Briefs","Boxers","Track Pants","Nightwear","Socks","Thermal Wear","Swimwear","Ethnic Wear","Cargo Pants","Oversized T-Shirt"],
-Ladies:["All Items","🔥 Trending","Dress","Top","T-Shirt","Shirt","Kurti","Saree","Salwar Suit","Jeans","Baggy Pants","Pants","Wide Leg Jeans","Skirt","Leggings","Jacket","Jumpsuit","Innerwear","Bra","Panty","Camisole","Nightwear","Sleepwear","Shorts","Palazzo","Dupatta","Shrug","Ethnic Wear","Crop Top","Oversized T-Shirt"],
-Kids:["All Items","🔥 Trending","T-Shirt","Shirt","Frock","Shorts","Jeans","Baggy Pants","Pants","Dress","Skirt","Jacket","Hoodie","Track Pant","Innerwear","Baniyan","Underwear","Briefs","Nightwear","Socks","School Uniform","Party Wear","Ethnic Wear","Thermal Wear","Cargo Pants","Oversized T-Shirt"],
-Shoes:["All Items","🔥 Trending","Sneakers","Running","Formal","Sports","Casual","Loafers","Boots","Sandals","Slippers","School Shoes","Party Shoes","Training Shoes","Walking Shoes"],
-Bags:["All Items","🔥 Trending","Backpack","Sling","Travel","Laptop Bag","School Bag","College Bag","Office Bag","Duffle","Handbag","Tote","Crossbody","Messenger","Gym Bag","Camera Bag"]};
-
-const trends={
-Gents:["Baggy Pants","Cargo Pants","Oversized T-Shirt","Hoodie"],
-Ladies:["Baggy Pants","Wide Leg Jeans","Oversized T-Shirt","Crop Top","Jumpsuit"],
-Kids:["Baggy Pants","Cargo Pants","Oversized T-Shirt","Hoodie","Party Wear"],
-Shoes:["Sneakers","Running","Sports","Training"],
-Bags:["Backpack","Sling","Tote","Crossbody"]};
-
-const brandMap={
-Shirt:["Levis","Allen Solly","U.S. Polo","Peter England","Van Heusen","Louis Philippe","Raymond","Arrow"],
-"Jeans":["Levis","Wrangler","Lee","Pepe Jeans","Spykar","Flying Machine","Mufti","Jack & Jones","U.S. Polo"],
-"Baggy Pants":["Levis","Jack & Jones","U.S. Polo","Flying Machine","Mufti","H&M"],
-"Cargo Pants":["Levis","Jack & Jones","U.S. Polo","Flying Machine","H&M"],
-"Innerwear":["Jockey","Van Heusen","XYXX","Dixcy Scott","Amul Macho","Rupa","Lux","VIP"],
-"Sneakers":["Nike","Adidas","Puma","Campus","Skechers"],
-"Running":["Nike","Adidas","Puma","Campus","Skechers"],
-"Sports":["Nike","Adidas","Puma","Campus"],
-"Backpack":["American Tourister","Skybags","Wildcraft","Puma","Nike"],
-"Sling":["Lavie","Caprese","Baggit","Fastrack"],
-"Tote":["Lavie","Caprese","Baggit"],
-"Crossbody":["Lavie","Caprese","Baggit","Fastrack"],
-"Dress":["Biba","Aurelia","Libas","AND","W"],
-"Kurti":["Biba","Libas","W","Aurelia"],
-"Wide Leg Jeans":["Levis","Lee","Wrangler","Pepe Jeans"],
-"Frock":["Hopscotch","Allen Solly Kids","Max","United Colors of Benetton"],
-"Hoodie":["Puma","Adidas","Nike","H&M"],
-};
-
-const colors=["Black","Blue","White","Red","Grey","Green","Pink"];
-const sizes=["XS","S","M","L","XL","XXL","28","30","32","34","36","38","40","42","7","8","9","10","11","12"];
-const locations=["Erode","Tiruchengode","Salem","Coimbatore","Tiruppur","Namakkal","Karur","Trichy","Madurai","Chennai","Tanjavur","Dindigul","Nilgiris","Krishnagiri","Dharmapuri","Tirunelveli","Thoothukudi","Virudhunagar","Vellore","Tiruvannamalai","Kanchipuram","Cuddalore","Villupuram","Kallakurichi","Nagapattinam","Ramanathapuram","Sivaganga","Pudukkottai"];
-
-const shops=[
-["Style Hub","Main Road, Erode",1.2,"10:00 AM","9:00 PM","20% OFF","STYLE20","0424-222111"],
-["Trend Mart","Perundurai Road, Erode",2.8,"9:30 AM","9:30 PM","Buy 2 Get 10% OFF","BUY2","0424-233222"],
-["Fashion Point","Bhavani Road, Erode",5.4,"10:00 AM","9:00 PM","Flat ₹300 OFF","FLAT300","0424-244333"],
-["Urban Wear","College Road, Erode",7.2,"10:30 AM","9:30 PM","15% OFF + Free pickup","TREND15","0424-255444"],
-["City Style","Bus Stand Road, Erode",9.6,"9:00 AM","10:00 PM","10% OFF","CITY10","0424-266555"],
-["Metro Fashion","Sathy Road, Erode",11.0,"10:00 AM","9:00 PM","₹250 OFF","METRO250","0424-277666"],
-["Fashion Square","Gobichettipalayam Road",12.4,"9:30 AM","9:30 PM","15% OFF","SQUARE15","0424-288777"],
-["Trend Zone","Mettur Road, Erode",13.6,"10:00 AM","9:00 PM","Buy 2 Save 15%","TZ15","0424-299888"],
-["Style Street","Chennimalai Road",14.3,"10:00 AM","8:30 PM","12% OFF","STREET12","0424-300999"],
-["Max Choice","Modakurichi Road",15.0,"9:30 AM","9:30 PM","10% OFF","MAX10","0424-311000"],
-["Urban Closet","Erode Bypass",16.1,"10:00 AM","9:00 PM","Flat ₹200 OFF","CLOSET200","0424-322111"],
-["City Trends","Anthiyur Road",16.8,"9:00 AM","9:00 PM","18% OFF","CITY18","0424-333222"],
-["Fashion World","Nambiyur Road",17.5,"10:00 AM","9:00 PM","Free pickup","PICKUP","0424-344333"],
-["Style Bazaar","Perundurai",18.0,"9:30 AM","9:30 PM","15% OFF","BAZAAR15","0424-355444"],
-["Trend House","Bhavani",18.4,"10:00 AM","8:30 PM","10% OFF","HOUSE10","0424-366555"],
-["Smart Wear","Sathyamangalam",19.0,"9:00 AM","9:00 PM","₹300 OFF","SMART300","0424-377666"],
-["Classic Corner","Kodumudi",19.3,"10:00 AM","8:30 PM","12% OFF","CLASSIC12","0424-388777"],
-["Fashion Nest","Salem Main Road",19.6,"9:30 AM","9:30 PM","20% OFF","NEST20","0424-399888"],
-["Daily Style","Tiruchengode Road",19.8,"10:00 AM","9:00 PM","Buy 2 Get 10% OFF","DAILY10","0424-400999"],
-["Mega Trends","Erode Town",20.0,"9:00 AM","10:00 PM","15% OFF","MEGA15","0424-411000"]
+const items = [
+  {name:"Formal Shirt", cat:"gents", emoji:"👔", price:"₹799"},
+  {name:"Denim Jeans", cat:"gents", emoji:"👖", price:"₹1199"},
+  {name:"Party Saree", cat:"ladies", emoji:"👗", price:"₹2499"},
+  {name:"Kurti", cat:"ladies", emoji:"👚", price:"₹899"},
+  {name:"Kids T-Shirt", cat:"kids", emoji:"👕", price:"₹399"},
+  {name:"Kids Frock", cat:"kids", emoji:"👗", price:"₹599"},
+  {name:"Running Shoes", cat:"shoes", emoji:"👟", price:"₹1499"},
+  {name:"Sandals", cat:"shoes", emoji:"🩴", price:"₹599"},
+  {name:"City Mall Shop", cat:"shops", emoji:"🏬", price:"Visit"},
+  {name:"Street Boutique", cat:"shops", emoji:"🏪", price:"Visit"}
 ];
 
-const baseProducts=[
-["Levis Baggy Pants","Gents","Baggy Pants","Levis","Black",1799],
-["Jack & Jones Baggy Pants","Gents","Baggy Pants","Jack & Jones","Blue",1899],
-["U.S. Polo Cargo Pants","Gents","Cargo Pants","U.S. Polo","Green",1699],
-["Levis Jeans","Gents","Jeans","Levis","Blue",1499],
-["Wrangler Jeans","Gents","Jeans","Wrangler","Black",1599],
-["Allen Solly Shirt","Gents","Shirt","Allen Solly","White",1299],
-["U.S. Polo Shirt","Gents","Shirt","U.S. Polo","Blue",1399],
-["Jockey Innerwear","Gents","Innerwear","Jockey","Black",499],
-["Puma Hoodie","Gents","Hoodie","Puma","Grey",1299],
-["Oversized T-Shirt","Gents","Oversized T-Shirt","H&M","White",799],
-["Biba Dress","Ladies","Dress","Biba","Red",1599],
-["Libas Kurti","Ladies","Kurti","Libas","Blue",999],
-["Levis Wide Leg Jeans","Ladies","Wide Leg Jeans","Levis","Blue",1799],
-["Baggit Sling","Ladies","Sling","Baggit","Black",1499],
-["Lavie Tote","Ladies","Tote","Lavie","Brown",1699],
-["Ladies Innerwear","Ladies","Innerwear","Jockey","Pink",599],
-["Crop Top","Ladies","Crop Top","H&M","White",699],
-["Jumpsuit","Ladies","Jumpsuit","AND","Black",1899],
-["Kids Frock","Kids","Frock","Max","Pink",899],
-["Kids Baggy Pants","Kids","Baggy Pants","H&M","Blue",799],
-["Kids Cargo Pants","Kids","Cargo Pants","Puma","Green",999],
-["Kids Oversized T-Shirt","Kids","Oversized T-Shirt","H&M","White",599],
-["Kids Hoodie","Kids","Hoodie","Puma","Grey",799],
-["Party Wear Kids Dress","Kids","Party Wear","Allen Solly Kids","Red",1199],
-["Nike Sneakers","Shoes","Sneakers","Nike","White",2999],
-["Puma Sneakers","Shoes","Sneakers","Puma","Black",2499],
-["Adidas Running Shoes","Shoes","Running","Adidas","Blue",2799],
-["Campus Sports Shoes","Shoes","Sports","Campus","Grey",1599],
-["Skechers Training Shoes","Shoes","Training","Skechers","Black",3999],
-["Skybags Backpack","Bags","Backpack","Skybags","Black",1299],
-["Wildcraft Backpack","Bags","Backpack","Wildcraft","Blue",1499],
-["Lavie Sling Bag","Bags","Sling","Lavie","Pink",1399],
-["Caprese Tote Bag","Bags","Tote","Caprese","Black",1799],
-["Fastrack Crossbody","Bags","Crossbody","Fastrack","Grey",1299]
-];
+let currentCat = "all";
 
-let products=[];
-baseProducts.forEach((p,i)=>{
-  // Every sample product has multiple sizes/stock entries so filters never become unusable.
-  ["S","M","L","XL"].forEach((s,j)=>products.push({id:i+"-"+s,name:p[0],cat:p[1],item:p[2],brand:p[3],color:p[4],size:s,price:p[5]+(j===3?100:0),stock:(j%3)+1,shop:(i+2)%shops.length}));
-  if(p[1]==="Shoes") ["8","9","10","11"].forEach((s,j)=>products.push({id:i+"-shoe-"+s,name:p[0],cat:p[1],item:p[2],brand:p[3],color:p[4],size:s,price:p[5],stock:(j%3)+1,shop:(i+4)%shops.length}));
-});
+function render() {
+  const query = document.getElementById('search').value.toLowerCase();
+  const container = document.getElementById('products');
+  container.innerHTML = "";
 
-let category=localStorage.getItem("df_category")||"Gents";
-let selectedItem=localStorage.getItem("df_item")||"All Items";
-let locationName=localStorage.getItem("df_location")||"Erode";
-let activeShopTab="All";
+  let filtered = items.filter(i => currentCat === "all" || i.cat === currentCat);
+  filtered = filtered.filter(i => i.name.toLowerCase().includes(query));
 
-function esc(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-function toast(t){let x=document.getElementById("toast");x.textContent=t;x.style.display="block";setTimeout(()=>x.style.display="none",1800)}
-function setCategory(c){category=c;selectedItem="All Items";localStorage.setItem("df_category",c);localStorage.setItem("df_item",selectedItem);renderAll();window.scrollTo({top:0})}
-function goHome(){category="Gents";selectedItem="All Items";renderAll();window.scrollTo({top:0})}
-function chooseItem(x){selectedItem=x==="🔥 Trending"?"🔥 Trending":x;localStorage.setItem("df_item",selectedItem);renderAll()}
-function itemProducts(){
- let q=document.getElementById("search")?.value?.toLowerCase().trim()||"";
- return products.filter(p=>{
-  let catOk=p.cat===category;
-  let itemOk=selectedItem==="All Items"||selectedItem==="🔥 Trending"? (selectedItem==="🔥 Trending"?trends[category].includes(p.item):true):p.item===selectedItem;
-  let searchOk=!q||[p.name,p.item,p.brand,p.color,p.size].join(" ").toLowerCase().includes(q);
-  return catOk&&itemOk&&searchOk;
- })
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="empty">No items found 😕</div>';
+    return;
+  }
+
+  filtered.forEach(i => {
+    container.innerHTML += `
+      <div class="card">
+        <div class="emoji">${i.emoji}</div>
+        <h3>${i.name}</h3>
+        <p>${i.price}</p>
+      </div>`;
+  });
 }
-function availableBrands(data){return [...new Set(data.map(p=>p.brand))]}
-function renderAll(){
- let main=document.getElementById("main");
- main.innerHTML=`
- <section class="hero"><h1>Find Your Style Nearby</h1><p>Choose a category, see every trending item, compare prices, check colour & size availability, then pick the best shop.</p></section>
- <div class="location"><div>📍 <b>${esc(locationName)}</b><small>Shopping area</small></div><button class="btn" onclick="openLocation()">Change</button></div>
- <h2>Shop by Category</h2><div class="cats">
- ${[['Gents','👕'],['Ladies','👗'],['Kids','🧒'],['Shoes','👟'],['Bags','🎒']].map(a=>`<div class="cat" onclick="setCategory('${a[0]}')"><b>${a[1]}</b>${a[0]}</div>`).join("")}</div>
- <h2>🔥 Trending — ${esc(category)}</h2><div class="horizontal">${trends[category].map(x=>`<button class="chip ${selectedItem===x?'active':''}" onclick="chooseItem('${x}')">🔥 ${x}</button>`).join("")}</div>
- <div class="itembar"><h2 style="margin-bottom:0">${esc(category)}</h2><button class="btn light" onclick="toggleItemList()">Wear / Item ▼</button></div>
- <div id="itemList" class="itemscroll">${itemData[category].map(x=>`<button class="chip ${selectedItem===x?'active':''}" onclick="chooseItem('${esc(x)}')">${esc(x)}</button>`).join("")}</div>
- <div class="panel"><b>🎯 Selected: ${esc(selectedItem)}</b><div class="meta">Brand list below is generated from the selected item. Every listed combination has sample stock.</div>
- <div class="grid2" style="margin-top:9px">
- <div class="field"><label>Brand</label><select id="fBrand" onchange="renderProductCards()"><option value="">All available brands</option>${availableBrands(itemProducts()).map(x=>`<option>${esc(x)}</option>`).join("")}</select></div>
- <div class="field"><label>Colour</label><select id="fColor" onchange="renderProductCards()"><option value="">All colours</option>${colors.map(x=>`<option>${x}</option>`).join("")}</select></div>
- <div class="field"><label>Size</label><select id="fSize" onchange="renderProductCards()"><option value="">All sizes</option>${sizes.map(x=>`<option>${x}</option>`).join("")}</select></div>
- <div class="field"><label>Price</label><select id="fPrice" onchange="renderProductCards()"><option value="">Any price</option><option value="500">Under ₹500</option><option value="750">Under ₹750</option><option value="1000">Under ₹1000</option><option value="1500">Under ₹1500</option><option value="2000">Under ₹2000</option><option value="5000">Under ₹5000</option></select></div>
- </div></div>
- <h2>🛍️ Available Products & Price Compare</h2><div id="productCards"></div>
- <h2>🏪 Best Nearby Shops</h2><div class="meta">Up to 20 sample shops are available. Choose a shop to see ALL its category inventory.</div>
- <div class="panel"><div class="field"><label>Radius</label><select id="radius" onchange="renderShops()"><option value="20">20 km</option><option value="1">1 km</option><option value="2">2 km</option><option value="5">5 km</option><option value="10">10 km</option><option value="15">15 km</option></select></div></div>
- <div id="shopCards"></div>
- <h2>🏷️ Offers</h2><div id="offerCards"></div>`;
- renderProductCards();renderShops();renderOffers();
+
+function setCategory(cat) {
+  currentCat = cat;
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + cat).classList.add('active');
+  render();
 }
-function toggleItemList(){let x=document.getElementById("itemList");x.style.display=x.style.display==="none"?"flex":"none"}
-function renderProductCards(){
- let data=itemProducts();let b=document.getElementById("fBrand")?.value||"",c=document.getElementById("fColor")?.value||"",s=document.getElementById("fSize")?.value||"",p=+document.getElementById("fPrice")?.value||0;
- data=data.filter(x=>(!b||x.brand===b)&&(!c||x.color===c)&&(!s||x.size===s)&&(!p||x.price<p||p===5000));
- // Never show "No match found": if a filter combination has no exact sample, show the closest matching sample data.
- if(!data.length){data=itemProducts().filter(x=>(!b||x.brand===b)&&(!c||x.color===c)&&(!s||x.size===s));}
- if(!data.length)data=itemProducts();
- document.getElementById("productCards").innerHTML=data.slice(0,12).map(x=>{
-  let sh=shops[x.shop];
-  return `<div class="card"><h3>${esc(x.name)}</h3><div class="meta">${esc(x.item)} · ${esc(x.brand)} · ${esc(x.color)} · Size ${esc(x.size)}</div><div class="price">₹${x.price.toLocaleString()}</div><div class="stock">✓ ${x.stock} available now</div><div class="meta">🏪 ${esc(sh[0])} · ${sh[2]} km</div><div class="actions"><button class="btn" onclick="shopDetails(${x.shop})">View Shop</button><button class="btn light" onclick="reserveProduct('${esc(x.name)}',${x.shop},'${esc(x.size)}')">Reserve</button></div></div>`}).join("");
-}
-function renderShops(){
- let r=+document.getElementById("radius")?.value||20;
- let data=shops.filter(x=>x[2]<=r).slice(0,20);
- document.getElementById("shopCards").innerHTML=data.map((s,i)=>`
- <div class="card"><div class="shophead">
+
+document.getElementById('search').addEventListener('input', render);
+
+setCategory('all');
+</script>
+
+</body>
+</html>
