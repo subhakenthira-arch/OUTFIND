@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   body { font-family: Arial, sans-serif; margin: 0; padding-bottom: 70px; }
-  header { padding: 15px; border-bottom: 1px solid #eee; }
+  header { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: flex-start; }
   header h1 { margin: 0; font-size: 28px; }
   header p { margin: 4px 0 12px; color: #777; font-size: 14px; }
-  #search { width: 90%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+  #search { width: 90%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin: 0 15px; }
   #products { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .card { border: 1px solid #eee; border-radius: 10px; padding: 12px; text-align: center; }
   .card .emoji { font-size: 36px; }
@@ -20,15 +19,47 @@
   nav button { background: none; border: none; font-size: 12px; color: #555; }
   nav button.active { color: #007bff; font-weight: bold; }
   .empty { text-align: center; color: #999; padding: 30px; }
+
+  #settingsBtn { background: #eef4ff; border: none; border-radius: 10px; width: 40px; height: 40px;
+                 font-size: 20px; cursor: pointer; }
+
+  #overlay { display: none; position: fixed; top:0; left:0; right:0; bottom:0;
+             background: rgba(0,0,0,0.4); z-index: 100; }
+  #settingsPanel { position: fixed; top:0; right:0; width: 80%; max-width: 320px; height: 100%;
+                    background: #fff; z-index: 101; padding: 20px; overflow-y: auto;
+                    transform: translateX(100%); transition: transform 0.25s ease; }
+  #settingsPanel.open { transform: translateX(0); }
+  #overlay.show { display: block; }
+  .settings-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+  .settings-section { margin-bottom: 20px; }
+  .settings-section label { display: block; font-size: 13px; color: #777; margin-bottom: 6px; }
+  .settings-section input[type=text], .settings-section select {
+     width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;
+  }
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; }
+  .switch { position: relative; width: 44px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top:0; left:0; right:0; bottom:0;
+            background-color: #ccc; border-radius: 24px; transition: .2s; }
+  .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+                    background-color: white; border-radius: 50%; transition: .2s; }
+  input:checked + .slider { background-color: #007bff; }
+  input:checked + .slider:before { transform: translateX(20px); }
+  #closeSettings { background:none; border:none; font-size:22px; float:right; }
+  .saved-msg { color: green; font-size: 13px; margin-top: 6px; display:none; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>DRESSFINDER</h1>
-  <p>Find it • Check it • Reserve it</p>
-  <input id="search" type="text" placeholder="🔍 Search product, brand, colour...">
+  <div>
+    <h1>DRESSFINDER</h1>
+    <p>Find it • Check it • Reserve it</p>
+  </div>
+  <button id="settingsBtn" onclick="openSettings()">⚙️</button>
 </header>
+
+<input id="search" type="text" placeholder="🔍 Search product, brand, colour...">
 
 <div id="products"></div>
 
@@ -40,6 +71,53 @@
   <button onclick="setCategory('shoes')" id="btn-shoes">👟<br>Shoes</button>
   <button onclick="setCategory('shops')" id="btn-shops">🏬<br>Shops</button>
 </nav>
+
+<div id="overlay" onclick="closeSettings()"></div>
+<div id="settingsPanel">
+  <button id="closeSettings" onclick="closeSettings()">✖</button>
+  <div class="settings-title">Settings</div>
+
+  <div class="settings-section">
+    <label>Name</label>
+    <input type="text" id="userName" placeholder="Your name">
+    <label style="margin-top:10px">Email</label>
+    <input type="text" id="userEmail" placeholder="you@example.com">
+  </div>
+
+  <div class="settings-section">
+    <label>Language</label>
+    <select id="language" onchange="applyLanguage()">
+      <option value="en">English</option>
+      <option value="ta">தமிழ்</option>
+    </select>
+  </div>
+
+  <div class="settings-section">
+    <div class="toggle-row">
+      <label style="margin:0">Notifications</label>
+      <label class="switch">
+        <input type="checkbox" id="notifToggle">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <label>Location</label>
+    <select id="locationSelect">
+      <option>Chennai</option>
+      <option>Coimbatore</option>
+      <option>Madurai</option>
+      <option>Bengaluru</option>
+      <option>Mumbai</option>
+      <option>Delhi</option>
+    </select>
+    <button onclick="useCurrentLocation()" style="margin-top:8px; width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; background:#f5f5f5;">📍 Use current location</button>
+  </div>
+
+  <button onclick="saveSettings()" style="width:100%; padding:10px; background:#007bff; color:#fff; border:none; border-radius:8px; font-size:15px;">Save</button>
+  <div class="saved-msg" id="savedMsg">Saved ✅</div>
+</div>
 
 <script>
 const items = [
@@ -88,8 +166,64 @@ function setCategory(cat) {
 }
 
 document.getElementById('search').addEventListener('input', render);
-
 setCategory('all');
+
+// ---- Settings logic ----
+function openSettings() {
+  document.getElementById('settingsPanel').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  loadSettings();
+}
+function closeSettings() {
+  document.getElementById('settingsPanel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function loadSettings() {
+  document.getElementById('userName').value = localStorage.getItem('df_name') || "";
+  document.getElementById('userEmail').value = localStorage.getItem('df_email') || "";
+  document.getElementById('language').value = localStorage.getItem('df_lang') || "en";
+  document.getElementById('notifToggle').checked = localStorage.getItem('df_notif') === "true";
+  document.getElementById('locationSelect').value = localStorage.getItem('df_location') || "Chennai";
+}
+
+function saveSettings() {
+  localStorage.setItem('df_name', document.getElementById('userName').value);
+  localStorage.setItem('df_email', document.getElementById('userEmail').value);
+  localStorage.setItem('df_lang', document.getElementById('language').value);
+  localStorage.setItem('df_notif', document.getElementById('notifToggle').checked);
+  localStorage.setItem('df_location', document.getElementById('locationSelect').value);
+
+  const msg = document.getElementById('savedMsg');
+  msg.style.display = "block";
+  setTimeout(() => msg.style.display = "none", 1500);
+
+  applyLanguage();
+}
+
+function applyLanguage() {
+  const lang = document.getElementById('language').value;
+  if (lang === "ta") {
+    document.querySelector('header h1').textContent = "டிரெஸ்ஃபைண்டர்";
+    document.getElementById('search').placeholder = "🔍 தேடு தயாரிப்பு, பிராண்ட்...";
+  } else {
+    document.querySelector('header h1').textContent = "DRESSFINDER";
+    document.getElementById('search').placeholder = "🔍 Search product, brand, colour...";
+  }
+}
+
+function useCurrentLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        alert("Location detected: " + pos.coords.latitude.toFixed(2) + ", " + pos.coords.longitude.toFixed(2));
+      },
+      () => alert("Location access denied. Please select manually from the list.")
+    );
+  } else {
+    alert("Geolocation not supported on this browser.");
+  }
+}
 </script>
 
 </body>
